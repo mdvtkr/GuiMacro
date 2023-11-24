@@ -1,0 +1,1 @@
+## pyautogui wrapper on macos machine
