@@ -11,6 +11,7 @@ pyautogui = {git = "https://github.com/mdvtkr/pyautogui.git"}
 pyperclip = "^1.8.2"
 pysftp = "^0.2.9"
 build = "^1.0.3"
+opencv-python = "^4.8.1.78"
 
 
 [build-system]

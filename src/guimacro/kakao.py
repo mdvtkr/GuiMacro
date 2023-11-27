@@ -5,8 +5,8 @@ _print = print
 print = lambda x, indent=0: _print("  "*indent + str(x).replace('\n', '\n'+"  "*indent), flush=True)
 
 class KakaoTalk(Base):
-    def __init__(self, cwd, secret_path='secret/kakaotalk'):
-        super().__init__(cwd)
+    def __init__(self, cwd, confidence=0.999, region=None, secret_path='secret/kakaotalk'):
+        super().__init__(cwd, confidence=confidence, region=region)
         
         secret = self.cwd/secret_path
         with secret.open('rt') as f:
@@ -14,7 +14,7 @@ class KakaoTalk(Base):
             pw = f.readline().strip()
 
         self._open_application('kakaotalk')
-        time.sleep(10)  # wait until application is shown
+        time.sleep(5)  # wait until application is shown
 
         self.__login(id, pw)
 
@@ -23,7 +23,8 @@ class KakaoTalk(Base):
         pos = self._find_image('kakao_btn_qrlogin.png')    # login check
         if not pos: 
             print('already logged in', 1)
-        else:       # login required.
+        else:
+            print('login required', 1)
             pos = self._find_image('kakao_input_id.png', retry=3)
             if pos:
                 self._click(pos)
