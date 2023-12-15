@@ -4,6 +4,7 @@ from subprocess import *
 from pathlib import Path
 import math
 from PIL import Image
+import time
 
 _print = print
 print = lambda x, indent=0: _print("  "*indent + str(x).replace('\n', '\n'+"  "*indent), flush=True)
@@ -127,4 +128,6 @@ class Base:
         pyautogui.hotkey(val)
     
     def _paste(self):
-        pyautogui.hotkey('command', 'v')
+        with pyautogui.hold("command"): 
+            time.sleep(1)
+            pyautogui.press("v")
