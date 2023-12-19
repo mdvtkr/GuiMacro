@@ -73,7 +73,7 @@ class KakaoTalk(Base):
 
         if not self.focus_input():
             print('failed to focus input position', 2)
-            self._macro.hotkey('esc')    # close opened chatroom
+            self._hotkey('esc')    # close opened chatroom
             return False
             
         for msg in msgs:
