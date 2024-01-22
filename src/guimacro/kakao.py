@@ -20,6 +20,10 @@ class KakaoTalk(Base):
 
     def __login(self, id, pw):
         print('login')
+        pos = self._find_image('kakao_btn_confirm.png')
+        if pos:
+            self._click(pos)    # clear popup.
+
         pos = self._find_image('kakao_btn_qrlogin.png')    # login check
         if not pos: 
             print('already logged in', 1)
