@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "guimacro"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["mdvtkr"]
 readme = "README.md"
@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">3.9,<3.12"
 pyautogui = {git = "https://github.com/mdvtkr/pyautogui.git"}
+tedious = {git = "https://github.com/mdvtkr/tedious.git"}
 pyperclip = "^1.8.2"
 pysftp = "^0.2.9"
 build = "^1.0.3"
@@ -17,3 +18,5 @@ opencv-python = "^4.8.1.78"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry_bumpversion.file."src/guimacro/__init__.py"]

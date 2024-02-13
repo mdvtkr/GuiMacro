@@ -1,8 +1,8 @@
 import time
 from guimacro import Base
+from tedious import intent_logger
 
-_print = print
-print = lambda x, indent=0: _print("  "*indent + str(x).replace('\n', '\n'+"  "*indent), flush=True)
+info, dbg, err = intent_logger.get(__name__)
 
 class KakaoTalk(Base):
     def __init__(self, cwd, confidence=0.999, region=None, secret_path='secret/kakaotalk'):
@@ -13,22 +13,20 @@ class KakaoTalk(Base):
             id = f.readline().strip()
             pw = f.readline().strip()
 
-        self._open_application('kakaotalk')
-        time.sleep(5)  # wait until application is shown
-
+        self.open()
         self.__login(id, pw)
 
     def __login(self, id, pw):
-        print('login')
+        info('login')
         pos = self._find_image('kakao_btn_confirm.png')
         if pos:
             self._click(pos)    # clear popup.
 
         pos = self._find_image('kakao_btn_qrlogin.png')    # login check
         if not pos: 
-            print('already logged in', 1)
+            info('already logged in', 1)
         else:
-            print('login required', 1)
+            info('login required', 1)
             pos = self._find_image('kakao_input_id.png', retry=3)
             if pos:
                 self._click(pos)
@@ -41,10 +39,10 @@ class KakaoTalk(Base):
             self._click(pos)
 
             while pos != None:
-                print('login waiting...', 2)
+                info('login waiting...', 2)
                 time.sleep(5)
                 pos = self._find_image('kakao_signing_in.png')
-            print('logged in', 1)
+            info('logged in', 1)
 
     def open_chatroom(self, chatroom_name_imgs:list):
         for name in chatroom_name_imgs:
@@ -72,11 +70,11 @@ class KakaoTalk(Base):
         """
 
         if not self.open_chatroom(chatroom_names):
-            print('failed to open chatroom: ' + ', '.join(chatroom_names), 2)
+            err('failed to open chatroom: ' + ', '.join(chatroom_names), 2)
             return False
 
         if not self.focus_input():
-            print('failed to focus input position', 2)
+            err('failed to focus input position', 2)
             self._hotkey('esc')    # close opened chatroom
             return False
             
@@ -84,8 +82,21 @@ class KakaoTalk(Base):
             self._input(msg)
             self._hotkey('enter')
 
+        time.sleep(2)
         self._hotkey('esc')
         return True
+    
+    def open(self):
+        dbg('open kakaotalk')
+        self._open_application('kakaotalk')
+        time.sleep(5)  # wait until application is shown
+
+    def close(self):
+        dbg('close kakaotalk')
+        self.open()
+        self._hotkey('esc')
+        time.sleep(3)
+        self._hotkey('esc')
 
 
 
