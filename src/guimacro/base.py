@@ -6,7 +6,7 @@ from PIL import Image
 import time
 from tedious import intent_logger
 
-info, dbg, err = intent_logger.get(__name__)
+info, dbg, err, logger = intent_logger.get(__name__)
 
 class Base:
     def __init__(self, cwd, confidence=0.999, region=None):

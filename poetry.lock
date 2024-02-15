@@ -736,7 +736,7 @@ rich = "^13.7.0"
 type = "git"
 url = "https://github.com/mdvtkr/tedious.git"
 reference = "HEAD"
-resolved_reference = "d69639ab22d76d1b0cc7e15464519ae3f7e47466"
+resolved_reference = "b1e2607dd17002ee814f75f08eb4b495007b7629"
 
 [[package]]
 name = "tomli"

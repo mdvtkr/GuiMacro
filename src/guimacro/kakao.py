@@ -2,7 +2,7 @@ import time
 from guimacro import Base
 from tedious import intent_logger
 
-info, dbg, err = intent_logger.get(__name__)
+info, dbg, err, logger = intent_logger.get(__name__)
 
 class KakaoTalk(Base):
     def __init__(self, cwd, confidence=0.999, region=None, secret_path='secret/kakaotalk'):
