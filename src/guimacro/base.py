@@ -133,3 +133,19 @@ class Base:
         with pyautogui.hold("command"): 
             time.sleep(1)
             pyautogui.press("v")
+
+    def move_to_left_display(self):
+        """ macos: custom move widow shortcut must be registred: ctrl+command+shift+arrow """
+        with pyautogui.hold("command"):
+            with pyautogui.hold("shift"):
+                with pyautogui.hold("ctrl"):
+                    time.sleep(2)
+                    pyautogui.press("left")
+
+    def move_to_right_display(self):
+        """ macos: custom move widow shortcut must be registred: ctrl+command+shift+arrow """
+        with pyautogui.hold("command"):
+            with pyautogui.hold("shift"):
+                with pyautogui.hold("ctrl"):
+                    time.sleep(2)
+                    pyautogui.press("right")
