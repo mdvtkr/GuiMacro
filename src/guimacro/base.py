@@ -8,6 +8,8 @@ from tedious import intent_logger
 
 info, dbg, err, logger = intent_logger.get(__name__)
 
+from pynput.keyboard import Key, Controller
+
 class Base:
     def __init__(self, cwd, confidence=0.999, region=None):
         self.cwd = cwd
@@ -136,16 +138,20 @@ class Base:
 
     def move_to_left_display(self):
         """ macos: custom move widow shortcut must be registred: ctrl+command+shift+arrow """
-        with pyautogui.hold("command"):
-            with pyautogui.hold("shift"):
-                with pyautogui.hold("ctrl"):
-                    time.sleep(2)
-                    pyautogui.press("left")
+        info('move to left window')
+        keyboard = Controller()
+        with keyboard.pressed(Key.cmd_l):
+            with keyboard.pressed(Key.shift):
+                with keyboard.pressed(Key.ctrl_l):
+                    keyboard.press(Key.left)
+                    keyboard.release(Key.left)
 
     def move_to_right_display(self):
         """ macos: custom move widow shortcut must be registred: ctrl+command+shift+arrow """
-        with pyautogui.hold("command"):
-            with pyautogui.hold("shift"):
-                with pyautogui.hold("ctrl"):
-                    time.sleep(2)
-                    pyautogui.press("right")
+        info('move to right window')
+        keyboard = Controller()
+        with keyboard.pressed(Key.cmd_l):
+            with keyboard.pressed(Key.shift):
+                with keyboard.pressed(Key.ctrl_l):
+                    keyboard.press(Key.right)
+                    keyboard.release(Key.right)

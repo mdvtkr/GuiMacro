@@ -13,6 +13,7 @@ pyperclip = "^1.8.2"
 pysftp = "^0.2.9"
 build = "^1.0.3"
 opencv-python = "^4.8.1.78"
+pynput = "^1.7.6"
 
 
 [build-system]
