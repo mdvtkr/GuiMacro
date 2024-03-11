@@ -5,15 +5,22 @@ import math
 from PIL import Image
 import time
 from tedious import intent_logger
+import enum
 
 info, dbg, err, logger = intent_logger.get(__name__)
 
-from pynput.keyboard import Key, Controller
+from pynput.keyboard import Key, Controller as Keyboard
+from pynput.mouse import Button as MouseButton, Controller as Mouse
+
+class Direction(enum.Enum):
+    left = 0
+    right = 1
 
 class Base:
-    def __init__(self, cwd, confidence=0.999, region=None):
+    def __init__(self, cwd, confidence=0.999, region=None, main_display=None):
         self.cwd = cwd
         self.set_default(confidence=confidence, region=region)
+        self.main_display = main_display
 
         # get screen size (pixel basis)
         tmp = pyautogui.screenshot()
@@ -136,10 +143,21 @@ class Base:
             time.sleep(1)
             pyautogui.press("v")
 
+    def toggle_fullscreen(self):
+        dbg('toggle fullscreen')
+        mouse = Mouse()
+        mouse.position = (100, 100)
+        mouse.click(MouseButton.left)
+        keyboard = Keyboard()
+        with keyboard.pressed(Key.cmd_l):
+            with keyboard.pressed(Key.ctrl_l):
+                keyboard.press('f')
+                keyboard.release('f')        
+
     def move_to_left_display(self):
         """ macos: custom move widow shortcut must be registred: ctrl+command+shift+arrow """
         info('move to left window')
-        keyboard = Controller()
+        keyboard = Keyboard()
         with keyboard.pressed(Key.cmd_l):
             with keyboard.pressed(Key.shift):
                 with keyboard.pressed(Key.ctrl_l):
@@ -149,7 +167,7 @@ class Base:
     def move_to_right_display(self):
         """ macos: custom move widow shortcut must be registred: ctrl+command+shift+arrow """
         info('move to right window')
-        keyboard = Controller()
+        keyboard = Keyboard()
         with keyboard.pressed(Key.cmd_l):
             with keyboard.pressed(Key.shift):
                 with keyboard.pressed(Key.ctrl_l):
