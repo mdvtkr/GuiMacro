@@ -34,6 +34,7 @@ class KakaoTalk(Base):
         pos = self._find_image('kakao_btn_settings.png')   # login check
         if pos:
             info('already logged in', 1)
+            self.logged_in = True
         else:
             pos = self._find_image('kakao_btn_qrlogin.png')    # login check
             if not pos:
@@ -43,7 +44,7 @@ class KakaoTalk(Base):
 
                     self.open()
                     self.__move_to_main_display()
-                    self.__login(id, pw, True)
+                    self.logged_in = self.__login(id, pw, True)
                 else:
                     err('login failed...')
             else:
@@ -108,17 +109,16 @@ class KakaoTalk(Base):
         self._hotkey('esc')
         return True
     
-    def open(self):
+    def open(self, wait=15):
         dbg('open kakaotalk')
         self._open_application('kakaotalk')
-        pause = 15
-        dbg(f'waiting {pause} sec...', 1)
-        time.sleep(pause)  # wait until application is shown
+        dbg(f'waiting {wait} sec...', 1)
+        time.sleep(wait)  # wait until application is shown
         dbg('proceed...', 1)
 
     def close(self):
         dbg('close kakaotalk')
-        self.open()
+        self.open(3)
         self._hotkey('esc')
         time.sleep(3)
         self._hotkey('esc')
