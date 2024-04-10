@@ -12,7 +12,10 @@ tedious = {git = "https://github.com/mdvtkr/tedious.git"}
 pyperclip = "^1.8.2"
 pysftp = "^0.2.9"
 build = "^1.0.3"
-opencv-python = "^4.8.1.78"
+opencv-python = [
+    { version = "4.8.1.78", markers = "sys_platform == 'darwin' and platform_release == '20.6.0'" },
+    { version = "^4.8.1.78" }
+]
 pynput = "^1.7.6"
 
 
