@@ -103,7 +103,7 @@ class Base:
                     dbg(f'[{sampling.name}|{confidence}] error', 2)
         # img.save(self.resource_path/'tmp'/img_name) ####
 
-    def _find_image(self, img_name, confidence=None, region=None, retry=1):
+    def _find_image(self, img_name, confidence=None, grayscale=False, region=None, retry=1):
         dbg(f'searching image: {img_name}')
         for i in range(0, retry):
             file = self.resource_path/img_name
@@ -111,10 +111,30 @@ class Base:
                 img = Image.open(str(file.absolute()))
                 if self.resource_scale_ratio:
                     img = img.resize((round(img.width*self.resource_scale_ratio[0]), round(img.height*self.resource_scale_ratio[1])), Image.Resampling.LANCZOS)
-                return pyautogui.locateCenterOnScreen(img, confidence=confidence if confidence else self.confidence, region=region if region else self.region)
+                return pyautogui.locateCenterOnScreen(img, confidence=confidence if confidence else self.confidence, region=region if region else self.region, grayscale=grayscale)
             except Exception as e:
                 err(f'cannot find image: {img_name} ({i+1}/{retry}) ({type(e).__name__})', 1)
         return None
+
+    def _find_images(self, img_name, confidence=None, region=None, retry=1, grayscale=False):
+        dbg(f'searching all image: {img_name}')
+        for i in range(0, retry):
+            file = self.resource_path/img_name
+            try:
+                img = Image.open(str(file.absolute()))
+                if self.resource_scale_ratio:
+                    img = img.resize((round(img.width*self.resource_scale_ratio[0]), round(img.height*self.resource_scale_ratio[1])), Image.Resampling.LANCZOS)
+                bounds = list(pyautogui.locateAllOnScreen(img, confidence=confidence if confidence else self.confidence, region=region if region else self.region, grayscale=grayscale))
+                if len(bounds) == 0:
+                    raise pyautogui.ImageNotFoundException()
+                else:
+                    positions = []
+                    for bound in bounds:
+                        positions.append(pyautogui.Point(bound.left+bound.width/2, bound.top+bound.height/2))
+                    return positions
+            except Exception as e:
+                err(f'cannot find image: {img_name} ({i+1}/{retry}) ({type(e).__name__})', 1)
+        return []
     
     def __adjust_pixel_ratio(self, pos):
         return (int(pos.x / self.pixel_ratio[0]), int(pos.y / self.pixel_ratio[1]))
