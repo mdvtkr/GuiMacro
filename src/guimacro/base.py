@@ -7,7 +7,7 @@ import time
 from tedious import intent_logger
 import enum
 
-info, dbg, err, logger = intent_logger.get(__name__)
+info, dbg, err, logger = (None, None, None, None)
 
 from pynput.keyboard import Key, Controller as Keyboard
 from pynput.mouse import Button as MouseButton, Controller as Mouse
@@ -17,10 +17,16 @@ class Direction(enum.Enum):
     right = 1
 
 class Base:
-    def __init__(self, cwd, confidence=0.999, region=None, main_display=None):
+    def __init__(self, cwd, confidence=0.999, region=None, main_display=None, file_log_path=None):
         self.cwd = cwd
         self.set_default(confidence=confidence, region=region)
         self.main_display = main_display
+
+        global info
+        global dbg
+        global err
+        global logger
+        info, dbg, err, logger = intent_logger.get(__name__, file=file_log_path)
 
         # get screen size (pixel basis)
         tmp = pyautogui.screenshot()
