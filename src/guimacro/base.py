@@ -6,6 +6,7 @@ from PIL import Image
 import time
 from tedious import intent_logger
 import enum
+import logging
 
 info, dbg, err, logger = (None, None, None, None)
 
@@ -17,7 +18,7 @@ class Direction(enum.Enum):
     right = 1
 
 class Base:
-    def __init__(self, cwd, confidence=0.999, region=None, main_display=None, file_log_path=None):
+    def __init__(self, cwd, confidence=0.999, region=None, main_display=None, file_log_path=None, log_level=logging.DEBUG):
         self.cwd = cwd
         self.set_default(confidence=confidence, region=region)
         self.main_display = main_display
@@ -27,6 +28,7 @@ class Base:
         global err
         global logger
         info, dbg, err, logger = intent_logger.get(__name__, file=file_log_path)
+        logger.setLevel(level=log_level)
 
         # get screen size (pixel basis)
         tmp = pyautogui.screenshot()
