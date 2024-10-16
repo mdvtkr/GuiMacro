@@ -157,6 +157,9 @@ class Base:
         dbg(f'doubleClick: ({pos})')
         pyautogui.doubleClick(pos[0], pos[1], button=pyautogui.LEFT)
 
+    def _mouseMove(self, x, y):
+        pyautogui.moveTo(x, y)
+
     def _input(self, val):
         dbg(f'input: {val}')
         pyperclip.copy(val)
